@@ -1,0 +1,22 @@
+# composer
+/vendor/
+
+# Pastas de IDE
+nbproject
+.buildpath
+.project
+.settings
+.komodotools
+.idea
+.vscode
+.metadata
+
+# Extensoes de IDE
+*.swp
+*.sublime-project
+*.sublime-workspace
+*.kpf
+*.komodoproject
+
+# docker
+.env
