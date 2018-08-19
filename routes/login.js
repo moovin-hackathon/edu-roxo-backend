@@ -6,23 +6,20 @@ module.exports = function(app, db) {
             "email": request.body.email, "password": password
         }, (error, results) => {
             if (error) {
-
                 response.status(503)
                 response.send()
                 return
             }
+
              if(!results) {
                  response.status(401)
                  response.send()
                  return
 
              } else {
+
                  response.send(results)
              }
-
-        });
-
-
-    });
-
-};
+        })
+    })
+}
