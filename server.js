@@ -5,6 +5,24 @@ const app = express()
 
 const port = 8080
 
+const header = function (request, response, next) {
+    response.header('Access-Control-Allow-Origin', '*')
+    response.header('Access-Control-Allow-Headers', 'Authorization,Content-Type')
+    next()
+}
+
+const options = function (request, response, next) {
+    if (request.method === 'OPTIONS') {
+
+        response.status(200)
+        response.send()
+        return
+    }
+    next()
+}
+
+app.use(header)
+app.use(options)
 app.use(express.json());
 
 MongoClient.connect(db.url,{ useNewUrlParser: true }, (err, database) => {
