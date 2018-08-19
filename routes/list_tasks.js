@@ -101,7 +101,7 @@ module.exports = function(app, db) {
 
             if (taskStatus !== 'done' && taskStatus !== 'not_done') {
                 response.status(422)
-                response.send({message: 'A tarefa só pode ser marcada como finalizada ou não finalizada.'})
+                response.send({message: 'A tarefa sÃ³ pode ser marcada como finalizada ou nÃ£o finalizada.'})
                 return
             }
 
@@ -109,7 +109,7 @@ module.exports = function(app, db) {
 
             if (task.status !== 'pending') {
                 response.status(422)
-                response.send({message: 'A tarefa só pode ser marcada como finalizada ou não finalizada se estiver pendente.'})
+                response.send({message: 'A tarefa sÃ³ pode ser marcada como finalizada ou nÃ£o finalizada se estiver pendente.'})
                 return
             }
             task.status = taskStatus
