@@ -1,7 +1,27 @@
 const ObjectId = require('mongodb').ObjectId
 
 module.exports = function(app, db) {
-    app.get('/profiles', (request, response) => {
+    app.get('/profiles/:id?', (request, response) => {
+
+        if (request.params.id) {
+            db.collection('profiles').findOne({_id: ObjectId(request.params.id)}, (error, profile) => {
+                if (error) {
+                    response.status(503)
+                    response.send()
+                    return
+                }
+
+                if (!profile) {
+                    response.status(404)
+                    response.send()
+                    return
+                }
+                response.send(profile)
+            })
+
+            return
+        }
+
         db.collection('profiles').find({}).toArray((error, profiles) => {
             if (error) {
                 response.status(503)

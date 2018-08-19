@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectId
 
 module.exports = function(app, db) {
-    app.get('/list_tasks', (request, response,) => {
+    app.get('/list_tasks/:profileName?', (request, response,) => {
 
         const date = new Date().toISOString().substr(0, 10)
 
@@ -59,13 +59,25 @@ module.exports = function(app, db) {
                                             }
                                         })
                                     }
-                                    response.send(listTask)
+
+                                    if (request.params.profileName) {
+                                        listTask.tasks = listTask.tasks.filter(task => task.children.indexOf(request.params.profileName) !== -1)
+                                        response.send(listTask)
+                                    } else {
+                                        response.send(listTask)
+                                    }
                                 })
                             }
                         })
                     })
                 } else {
-                    response.send(dbListTask)
+
+                    if (request.params.profileName) {
+                        dbListTask.tasks = dbListTask.tasks.filter(task => task.children.indexOf(request.params.profileName) !== -1)
+                        response.send(dbListTask)
+                    } else {
+                        response.send(dbListTask)
+                    }
                 }
             }
         )
