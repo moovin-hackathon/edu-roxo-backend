@@ -39,7 +39,9 @@ module.exports = function(app, db) {
     })
 
     app.post('/profiles', (request, response) => {
-        db.collection('profiles').insertOne(request.body, (error, profiles) => {
+        const profile = request.body
+        profile.points = 0
+        db.collection('profiles').insertOne(profile, (error, profiles) => {
             if (error) {
                 response.status(503)
                 response.send()
