@@ -11,14 +11,28 @@ module.exports = function (app, db) {
             }
         })
     })
+    app.get('/rewards/:status', (request, response) => {
+        db.collection('rewards').find({status : request.params.status }).toArray((error, results) => {
+            if (error) {
+                response.status(503)
+                response.send()
+                return
+            } else {
+                response.send(results)
+            }
+        })
+    })
 
     app.post('/rewards', (request, response) => {
-        db.collection('rewards').insertOne(request.body, (err, results) => {
+        const reward = request.body
+        reward.status = 'available'
+        db.collection('rewards').insertOne(reward, (err, results) => {
             if (err) {
                 response.status(503)
                 response.send()
                 return
             } else {
+                console.log(reward)
                 response.status(201)
                 response.send()
                 return
