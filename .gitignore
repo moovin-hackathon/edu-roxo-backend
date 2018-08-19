@@ -20,3 +20,6 @@ nbproject
 
 # docker
 .env
+
+# node
+package-lock.json
