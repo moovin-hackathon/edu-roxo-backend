@@ -1,3 +1,5 @@
+const ObjectId = require('mongodb').ObjectId
+
 module.exports = function(app, db) {
     app.get('/list_tasks', (request, response,) => {
 
@@ -67,5 +69,77 @@ module.exports = function(app, db) {
                 }
             }
         )
+    })
+    app.post('/list_tasks/:id', (request, response) => {
+
+        const id = request.params.id
+        const taskStatus = request.body.task.status
+        const taskDescription = request.body.task.description
+        const date = new Date().toISOString().substr(0, 10)
+
+        db.collection('list_tasks').findOne({
+            _id: ObjectId(id)
+        }, (error, dbListTask) => {
+
+            if (error) {
+                response.status(503)
+                response.send()
+                return
+            }
+
+            if (!dbListTask) {
+                response.status(404)
+                response.send()
+                return
+            }
+
+            if (dbListTask.date !== date) {
+                response.status(422)
+                response.send({message: 'A lista de tarefas deve ser de hoje para poder ser marcada como feita ou desfeita.'})
+                return
+            }
+
+            if (taskStatus !== 'done' && taskStatus !== 'not_done') {
+                response.status(422)
+                response.send({message: 'A tarefa só pode ser marcada como finalizada ou não finalizada.'})
+                return
+            }
+
+            const task = dbListTask.tasks.find(task => task.description == taskDescription)
+
+            if (task.status !== 'pending') {
+                response.status(422)
+                response.send({message: 'A tarefa só pode ser marcada como finalizada ou não finalizada se estiver pendente.'})
+                return
+            }
+            task.status = taskStatus
+
+            db.collection('list_tasks').updateOne({_id: dbListTask._id}, {$set: {tasks: dbListTask.tasks}}, (error, updated) => {
+                if (error) {
+                    response.status(503)
+                    response.send()
+                    return
+                }
+
+                if (updated.modifiedCount) {
+
+                    for (let i in task.children) {
+                        const child = task.children[i]
+
+                        db.collection('profiles').findOneAndUpdate({
+                            name: child
+                        }, {
+                            $inc: {
+                                points: task.points
+                            }
+                        })
+                    }
+
+                    response.status(204)
+                    response.send()
+                    return
+                }
+            })
+        })
     })
 }
