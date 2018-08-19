@@ -92,7 +92,7 @@ module.exports = function (app, db) {
                     _id: profile._id
                 }, {
                     $inc: {
-                        points: reward.points * -1
+                        points: parseInt(reward.points) * -1
                     }
 
                 }, (err, results) => {

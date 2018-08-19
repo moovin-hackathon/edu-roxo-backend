@@ -55,7 +55,7 @@ module.exports = function(app, db) {
                                             name: child
                                         }, {
                                             $inc: {
-                                                points: listTask.points
+                                                points: parseInt(listTask.points)
                                             }
                                         })
                                     }
@@ -142,7 +142,7 @@ module.exports = function(app, db) {
                             name: child
                         }, {
                             $inc: {
-                                points: task.points
+                                points: parseInt(task.points)
                             }
                         })
                     }
