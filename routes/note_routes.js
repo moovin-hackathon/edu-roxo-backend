@@ -1,6 +1,11 @@
 module.exports = function(app, db) {
-    app.get('/notes', (req, res) => {
-        // You'll create your note here.
-        res.send('Hello')
+    app.post('/tasks', (request, response) => {
+        db.collection('notes').insertOne(request.body, (err, results) => {
+            if (err) {
+                response.send({ 'error': 'An error has occurred' });
+            } else {
+                response.send(results);
+            }
+        })
     });
 };
