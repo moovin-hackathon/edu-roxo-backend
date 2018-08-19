@@ -55,16 +55,9 @@ module.exports = function(app, db) {
                                             $inc: {
                                                 points: listTask.points
                                             }
-                                        }, (error, result) => {
-                                            if (error) {
-                                                response.status(503)
-                                                response.send()
-                                                return
-                                            }
-
-                                            response.send(listTask)
                                         })
                                     }
+                                    response.send(listTask)
                                 })
                             }
                         })
