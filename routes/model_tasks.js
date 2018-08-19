@@ -20,7 +20,11 @@ module.exports = function(app, db) {
     })
 
     app.post('/model_tasks', (request, response) => {
-        db.collection('model_tasks').insertOne(request.body, (err, results) => {
+        const modelTask = request.body
+        if(modelTask.children == undefined) {
+            modelTask.children = []
+        }
+        db.collection('model_tasks').insertOne(modelTask, (err, results) => {
             if (err) {
                 response.status(503)
                 response.send()
