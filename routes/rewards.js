@@ -27,7 +27,7 @@ module.exports = function (app, db) {
     })
 
     app.post('/rewards/:id/:profileId', (request, response) => {
-        
+
         db.collection('rewards').findOne({
             _id: ObjectId(request.params.id)
         }, (error, reward) => {
