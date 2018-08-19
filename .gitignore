@@ -1,5 +1,5 @@
 # composer
-/vendor/
+/node_modules
 
 # Pastas de IDE
 nbproject
