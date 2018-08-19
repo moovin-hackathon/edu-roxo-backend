@@ -118,7 +118,7 @@ module.exports = function (app, db) {
                         }
 
                         response.status(200)
-                        response.send()
+                        response.send({message: 'Compra efetuada com sucesso.'})
                         return
                     })
                 })
