@@ -1,44 +1,44 @@
 const ObjectId = require('mongodb').ObjectId
 
 module.exports = function(app, db) {
-    app.get('/model_tasks', (request, response) => {
-
-        db.collection('model_tasks').find({}).toArray((error, modelTasks) => {
+    app.get('/profiles', (request, response) => {
+        db.collection('profiles').find({}).toArray((error, profiles) => {
             if (error) {
                 response.status(503)
                 response.send()
                 return
             }
 
-            if (!modelTasks) {
+            if (!profiles) {
                 response.status(404)
                 response.send()
                 return
             }
-            response.send(modelTasks)
+            response.send(profiles)
         })
     })
 
-    app.post('/model_tasks', (request, response) => {
-        db.collection('model_tasks').insertOne(request.body, (err, results) => {
-            if (err) {
+    app.post('/profiles', (request, response) => {
+        db.collection('profiles').find({}).toArray((error, profiles) => {
+            if (error) {
                 response.status(503)
                 response.send()
                 return
             }
 
-            if (!results) {
-                response.status(400)
+            if (!profiles) {
+                response.status(404)
                 response.send()
                 return
             }
+            response.send(profiles)
         })
     })
 
-    app.delete('/model_tasks/:id', (request, response) => {
+    app.delete('/profiles/:id', (request, response) => {
         const id = request.params.id
 
-        db.collection('model_tasks').deleteOne({_id: ObjectId(id)}, (err, results) => {
+        db.collection('profiles').deleteOne({_id: ObjectId(id)}, (err, results) => {
             if (err) {
                 response.status(503)
                 response.send()
