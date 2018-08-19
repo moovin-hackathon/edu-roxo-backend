@@ -19,19 +19,15 @@ module.exports = function(app, db) {
     })
 
     app.post('/profiles', (request, response) => {
-        db.collection('profiles').find({}).toArray((error, profiles) => {
+        db.collection('profiles').insertOne(request.body, (error, profiles) => {
             if (error) {
                 response.status(503)
                 response.send()
                 return
             }
-
-            if (!profiles) {
-                response.status(404)
+                response.status(201)
                 response.send()
                 return
-            }
-            response.send(profiles)
         })
     })
 
